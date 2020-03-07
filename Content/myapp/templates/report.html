@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+{% block body %}
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+        <!-- start of the sidebar -->
+        <div class="container">
+            <div class="sidebar">
+                <div class="info"> 
+                        <b> Staff Information: </b> </br>
+                            Name: {{session["first_name"]}} {{session["last_name"]}} </br>
+                        Company: {{session["airline_name"]}} </br>
+                    </div>
+            </br>
+                <a href = "/staffHome" class = "option"> Home </a>  
+                <a href = "/flightManage" class = "option"> Flights Management </a> 
+                <a href = "/airSystemManage/airplane" class = "option"> Airplanes Management</a>   
+                <a href = "/airSystemManage/airport" class = "option"> Airports Management</a> 
+                <a href = "/flightManage" class = "option"> View Ratings</a>
+                <a href = "/report/topAgent" class = "option"> View Top Booking Agents</a>  
+                <a href = "/report/topCustomer" class = "option"> View Top Customers</a> 
+                <a href = "/report/salesReport/default" class = "option"> View Reports </a> 
+                <a href = "/report/revenueCompare" class = "option"> Revenue Comparison </a> 
+                <a href = "/report/topDestination" class = "option"> Top Destination </a> 
+                <a href="/logout" class="option">Log out</a>
+            </div>
+
+            <div class="content">
+                <!-- view ratings -->
+                <div class = "view_ratings">
+                    {% if ratings %} 
+                    <div class="title staff"> Ratings for the Flight: </div>
+                    <h4> Airline Name: {{session["airline_name"]}} </h4> 
+                    <h4> Flight Number: {{ratings[0]["flight_num"]}} </h4> 
+                    <h4> Departure Time: {{ratings[0]["dept_time"]}} </h4> 
+                    <h4> Average Rate: {{avg_rate}} </h4> </br>
+                    
+                    <h4> Ratings & Comments: </h4>
+
+                    <table id = "rate_list">
+                            <th> Customer's Email </th>
+                            <th> Rate </th>
+                            <th> Comments </th>
+
+                        {% for line in ratings %}
+                        <tr>
+                            <td class="rate_list">{{line['cust_email']}}</td>
+                            <td class="rate_list">{{line['rate']}}</td>
+                            <td class="rate_list">{{line['comments']}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                </div>
+
+                <!-- top booking agents    -->
+                <div class = "top_booking_agents">
+                    {% if by_sales or by_commission %} 
+                    <form action = "/report/topAgent" method = "POST">
+                        <label for="viewSelect">View Options </label>
+                        <select name="viewSelect" id = "viewSelect">
+                                <option value="by_sales_month">Top 5 Agents by total sales for the past month</option>
+                                <option value="by_sales_year">Top 5 Agents by total sales for the past year</option>
+                                <option value="by_commission_year">Top 5 Agents by total commission for the past year</option>
+                        </select>
+                            <input type="submit" value="View">
+                    </form>
+                         <div class="title staff"> {{title}}: </div> 
+                        {% if by_sales %}
+                        <table id = "agent_list">
+                                <th> Agent's Email </th>
+                                <th> Total Sales </th>
+
+                            {% for line in by_sales %}
+                            <tr>
+                                <td class="agent_list">{{line['agent_email']}}</td>
+                                <td class="agent_list">{{line['total_sales']}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        {% endif %}
+
+                        {% if by_commission %} 
+                        <table id = "agent_list2">
+                                <th> Agent's Email </th>
+                                <th> Total Commission </th>
+
+                            {% for line in by_commission %}
+                            <tr>
+                                <td class="agent_list2">{{line['agent_email']}}</td>
+                                <td class="agent_list2">{{line['commission']}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <!-- top customers -->
+                <div class = "frequent_customers">
+                    {% if passenger %}  
+                    <div class="title staff">  Most Frequent Passenger </div>
+                    <table id = "flight_list ">
+                            <th> Passenger's Email </th>
+                            <th> Travel Times </th>
+                            <th> Actions </th>
+                        {% for line in passenger %}
+                        <tr>
+                            <td class="flight_list ">{{line['cust_email']}}</td>
+                            <td class="flight_list ">{{line['travel_times']}}</td>
+                            <td>
+                                <a href = "/report/topCustomer/{{line['cust_email']}}"> Flights History</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                </div>
+
+                <!-- customer's flights -->
+                <div class = "flight_history">
+                    {% if people_flight %}  
+                    <h4> The Flights Taken by Customer {{people_flight[0]["cust_email"]}} with {{session["airline_name"]}} </h4>
+
+                    <table id = "flight_list ">
+                            <th> Airline Name </th>
+                            <th> Flight Number </th>
+                            <th> Departure Time </th>
+                            <th> Purchase Time </th>
+                            <th> Sold Price </th>
+                        {% for line in people_flight %}
+                        <tr>
+                            <td class="flight_list ">{{line['airline_name']}}</td>
+                            <td class="flight_list ">{{line['flight_num']}}</td>
+                            <td class="flight_list ">{{line["dept_time"]}}</td>
+                            <td class="flight_list ">{{line["purchase_time"]}}</td>
+                            <td class="flight_list ">{{line["sold_price"]}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                </div>
+                <!-- sales report -->
+                <div class = "sales_report">
+                    {% if sales %}
+                    <div class="title staff"> Total Ticket Sales Report for {{session["airline_name"]}}</div>
+                    <form class="salesrange" action="/report/salesReport/date_range" method="POST">
+                        <div class="inputBlock">
+                            <label class="dateLabel" for="from_date">from date: </label>
+                            <input type="date" name = "from_date" /></br>   
+                        </div>         
+                        <div class="inputBlock">   
+                            <label class="dateLabel" for="to_date">to date: </label>
+                            <input type="date" name = "to_date" /></br>
+                        </div> 
+                        <input type="submit" class="dateSubmit" value="view sales within this range"> <br>
+                    </form>
+
+                    <form class = "sales option" action = "/report/salesReport/option" method = "POST">
+                        <label for="salesSelect">View Options </label>
+                        <select name="salesSelect" id = "salesSelect">
+                                <option value="sales_past_month">Past Month</option>
+                                <option value="sales_last_year">Past Year</option>
+                        </select>
+                            <input type="submit" value="View">
+                    </form>
+                    
+                    <h3> {{default}} {{title}} </h3> 
+                    <div class="sales_total"> <h3>  The total ticket sales from {{from_date}} to {{to_date}} is {{total_sales}}. </h3></div>
+                    <div class="sales_report_canvas">
+                            <canvas id="barchart" width="600" height="400"></canvas>
+                            <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+                            <script>
+                                // bar chart data
+                                var barData = {
+                                labels : [
+                                    {% for item in labels %}
+                                    "{{ item }}",
+                                    {% endfor %}
+                            ],
+                                datasets : [{
+                                    fillColor: "rgba(151,187,205,0.2)",
+                                    strokeColor: "rgba(151,187,205,1)",
+                                    pointColor: "rgba(151,187,205,1)",
+                                    data : [
+                                    {% for item in values %}
+                                        "{{ item }}",
+                                        {% endfor %}
+                                   ]
+                                    }
+                                ]
+                                }
+                                // get bar chart canvas
+                                var mychart = document.getElementById("barchart").getContext("2d");
+                                max = {{max}};
+                                steps = 10;
+                                // draw bar chart
+                                new Chart(mychart).Bar(barData, {
+                                scaleOverride: true,
+                                scaleSteps: steps,
+                                scaleStepWidth: Math.ceil(max / steps),
+                                scaleStartValue: 0,
+                                scaleShowVerticalLines: true,
+                                scaleShowGridLines : true,
+                                barShowStroke : true,
+                                scaleShowLabels: true
+                                }
+                                );
+                            </script>
+                    </div>
+                    {% endif %}
+                </div>
+             
+                <!-- revenue compare -->
+                {% if revenue %}
+                <div class = "revenue_compare">
+                    <div class="title staff"> Revenue Comparison for {{session["airline_name"]}} </div>
+                    <form action = "/report/revenueCompare" method = "POST">
+                        <label for="revSelect">View Options </label>
+                        <select name="revSelect" id = "revSelect">
+                                <option value="rev_past_month">Past Month</option>
+                                <option value="rev_last_year">Past Year</option>
+                        </select>
+                            <input type="submit" value="View">
+                    </form>
+                    <h3> {{default}} {{title}} </h3>
+                    <div class = "revenue_compare_canvas">
+                        <canvas id="pieChart" width="600" height="400"></canvas>
+                        <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+                        <script>
+                            var pieData = [
+                              {% for values, labels, colors in set %}
+                                {
+                                  value: {{values}},
+                                  label: "{{labels}}",
+                                  color: "{{colors}}"
+                                },
+                              {% endfor %}
+                            ];
+                            // get bar chart canvas
+                            var mychart = document.getElementById("pieChart").getContext("2d");
+                            // draw pie chart
+                            new Chart(document.getElementById("pieChart").getContext("2d")).Pie(pieData);
+                          </script>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- top destinations -->
+                <div class = "top_destinations">
+                {% if destinations %} 
+                    <form action = "/report/topDestination" method = "POST">
+                        <label for="seeSelect">View Options </label>
+                        <select name="seeSelect" id = "seeSelect">
+                                <option value="by_3month">Past 3 Months</option>
+                                <option value="by_last_year">Past Year</option>
+                        </select>
+                            <input type="submit" value="View">
+                    </form>
+                    <div class="title staff">  {{title}}: </div> 
+                    <table id = "place_list">
+                            <th> Airport's Code </th>
+                            <th> City Name </th>
+                            <th> Visit Times</th>
+
+                        {% for line in destinations %}
+                        <tr>
+                            <td class="place_list">{{line['arr_at']}}</td>
+                            <td class="place_list">{{line['city']}}</td>
+                            <td class="place_list">{{line['visit_time']}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
+    
+            <div class = "noFound">
+            {% if noFound %}
+            <p class="noFound"><strong>Error:</strong> {{noFound}}</p> </br>
+            <a href='/staffHome'>Go back to StaffHome</a>
+            {% endif %}
+            </div>
+        </div>
+      
+        
+    <script src="{{ url_for('static',filename='js/script.js')}}"></script>
+{% endblock %}

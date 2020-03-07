@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+{% block body %} 
+{% if not message %}
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+    <div>
+	    <a class="link" href="/login">LOGIN</a>
+        <a class="link" href="/register">REGISTER</a>
+    </div>
+</div>
+
+<div class="line"></div>
+{% endif %}
+
+<div class ="bigButtons">
+    <div onclick = "search()" class="bigButton chosen" id = "searchButton">Search Flights</div>
+    <div onclick = "check()" class="bigButton" id = "checkButton" >Check Flight Status</div>
+</div>
+
+<div id="searchBlock">
+    <div onclick="oneWay()" class="smallButton active" id="oneWayButton">One Way</div>
+    <div onclick="roundTrip()" class="smallButton" id="roundTripButton">Round Trip</div>
+    <form action="/searchFlights" class="searchForm" method="POST" onsubmit="return checkForm();">
+        <div class="inputBlock">
+            <label for="dept_from">place of departure:</label>
+            <input type="text" name = "dept_from" placeholder="city/airport" required/> </br>
+        </div>
+        <div class="inputBlock">
+            <label for="arr_at">destination:</label>
+            <input type="text" name = "arr_at" placeholder="city/airport" required/></br>
+        </div>
+        <div class="inputBlock">
+            <label for="dept_date">departure date:</label>
+            <input type="date" name = "dept_date" required/></br>
+        </div>
+        <div class="inputBlock" id="return_date">
+            <label for="return_date">return date:</label>
+            <input type="date" name = "return_date"/></br>
+        </div>
+        <input type="submit" value = "Search"> <br>
+    </form>
+</div>
+
+<div id="checkBlock">
+    <form action="/checkFlight" method="POST" onsubmit="return validate();">
+        <div class="inputBlock">
+            <label for="airline_name">airline name:</label>
+            <input type="text" name = "airline_name" placeholder="city/airport" required/> </br>
+        </div>
+        <div class="inputBlock">
+            <label for="flight_num">flight number:</label>
+            <input type="text" name = "flight_num" required/> </br>
+        </div>
+        <div>Please fill out at least one of the dates below.</div><br>
+        <div class="inputBlock">
+            <label for="dept_date">departure date:</label>
+            <input type="date" id="dept_date" name = "dept_date"/></br>
+        </div>
+        <div class="inputBlock">
+            <label for="arr_date">arrival date:</label>
+            <input type="date" name = "arr_date" id="arr_date"/></br>
+        </div>
+        <input type="submit" value = "Search"> <br>
+    </form>
+</div>
+
+{% if error %}
+    <div class="prompt"> {{error}}</div>
+{% endif %}
+<script src="{{ url_for('static',filename='js/script.js')}}"></script>
+
+{% endblock %} 

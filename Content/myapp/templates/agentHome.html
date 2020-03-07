@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+{% block body %} 
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+<div class="line"></div>
+<div class="container">
+        <div class="sidebar">
+            <a href="/agentHome" class="option">Home</a>
+            <a href="/viewMyFlights" class="option">View My Flights</a>
+            <a href="/searchForFlights" class="option">Search for Flights</a>
+            <a href="/commission" class="option">View My Comission</a>
+            <a href="/topCustomers" class="option">Top Customers</a>
+            <a href="/logout" class="option">Log out</a>
+        </div>
+
+    <div class="content">
+        <div class="title staff">Welcome, booking agent.</div>
+    
+    </div>
+</div>
+
+{% endblock %}

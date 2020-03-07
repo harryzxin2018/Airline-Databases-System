@@ -1,0 +1,337 @@
+html, body{
+    font-family: "Lato";
+    margin: 0;
+}
+
+textarea, select, input, button { outline: none; }
+
+select{
+    margin-right: 20px;
+}
+
+table, th, td{
+    border: 1px dashed #999999;
+    text-align: center;
+   }
+   
+table{
+    margin-left: 20px;
+}
+
+input{
+    border: none;
+    border-bottom: solid 1px #999999;
+    font-size: medium;
+    padding: 5px;
+}
+
+input[type=submit]{
+    margin-top: 20px;
+    border: none;
+    color: white;
+    background-color: #3A8FB7;
+    padding: 6px 10px;
+    border-radius: 2px;
+    font-size: small;
+}
+
+#purchase{
+    margin-top: 20px;
+    border: none;
+    color: white;
+    background-color: #444444;
+    padding: 6px 10px;
+    border-radius: 2px;
+    font-size: small;
+    margin-left: 20px;
+}
+
+
+#purchase:hover{
+    background-color:#E83015;
+}
+
+input[type=submit]:hover{
+    background-color:#006284;
+}
+
+label{
+    width: 150px;
+    font-family: "Lato";
+}
+
+.inputBlock{
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+a{
+    color: #3A8FB7;
+    text-decoration: none;
+    font-family: "Lato";
+}
+
+.link{
+    margin-left: 10px;
+}
+
+.link:hover{
+    color: #006284;
+}
+
+/* index page */
+
+.topBar{
+    margin: 20px;
+    margin-bottom: 10px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.line{
+    background-color: #E83015;
+    height: 2px;
+    width: 100%;
+}
+
+.logo{
+    font-style: italic;
+    font-size: large;
+    color: #E83015;
+    font-family: Futura;
+}
+
+
+.bigButtons{
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+
+}
+
+.bigButton:link {
+    text-decoration: none;
+}
+  
+.bigButton {
+    margin: 20px;
+    font-size: x-large;
+    font-weight: 700;
+    font-style: italic;
+    color: black;
+    display: inline-block;
+    margin-right: 1.5rem;
+    position: relative;
+    padding-bottom: -4px;
+}
+  
+.bigButton:before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 100%;
+    bottom: 0;
+    background: #444444;
+    opacity: 0.6;
+    height: 8px;
+    transition-property: left, right;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+  
+.bigButton:hover:before,
+.bigButton:focus:before,
+.bigButton:active:before {
+    right: 0;
+}
+
+.chosen:before{
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #444444;
+    opacity: 0.6;
+    height: 8px;
+}
+
+#searchBlock{
+    margin-left: 20px;
+    margin-top: 20px;
+    height: 260px;
+}
+
+.searchForm{
+    margin-top: 20px;
+}
+
+.smallButton{
+    display: inline;
+    font-size: small;
+    border: solid 1px #999999;
+    padding: 6px 10px;
+    border-radius: 2px;
+    color: #999999;
+    margin-right: 20px;
+}
+
+#return_date{
+    display: none;
+}
+  
+.active{
+    border-color: black;
+    color: black;
+}
+
+#checkBlock{
+    margin-left: 20px;
+    margin-top: 20px;
+    height: 200px;
+    display: none;
+}
+
+/* login */
+
+.wrapper{
+    margin: 20px;
+}
+
+.title{
+    margin: 20px;
+    margin-top: 60px;
+    margin-bottom: 30px;
+    font-size: x-large;
+    font-weight: 700;
+    font-style: italic;
+    color: black;
+}
+
+select{
+    font-family: 'Lato';
+    outline: none;
+    background: none;
+    border-radius: 2px;
+    margin-bottom: 15px;
+}
+
+.login{
+    margin-bottom: 10px;
+}
+
+.back{
+    background-color: #999999;
+    color: white;
+    border-radius: 2px;
+    font-size: small;
+    padding: 6px 10px;
+}
+
+.registerButton{
+    margin-bottom: 20px;
+}
+
+#error{
+    display: none;
+}
+
+.error{
+    margin-left: 20px;
+}
+
+#agentForm{
+    display: none;
+}
+
+#staffForm{
+    display: none;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+}
+
+.content{
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+/* spending */
+.spending{
+    margin-left: 20px;
+}
+
+.dateSubmit{
+    margin-top: 5px !important;
+    margin-bottom: 10px;
+}
+
+.dateLabel{
+    width: 100px;
+}
+
+.option{
+    margin-bottom: 15px;
+}
+
+.option:hover{
+    color: #006284;
+}
+
+.totalPrice{
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.payment{
+    margin-top: 20px;
+}
+
+.totalSpending{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* purchase */
+fieldset{
+    font-family: "Lato";
+    margin-left: 20px;
+}
+
+.commentForm{
+    margin-left: 20px;
+}
+
+.info{
+    border: 1px dashed #999999;
+    padding: 10px;
+    color: #444444;
+}
+
+.prompt{
+    margin: 20px;
+}
+
+.special{
+    margin-left: 20px;
+    margin-top: 30px;
+    display: inline-block;
+}
+
+.title.staff{
+    margin-left: 0;
+}

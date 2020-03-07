@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+{% block body %}
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+    <!-- start of the sidebar -->
+    <div class="container">
+        <div class="sidebar">
+            <div class="info"> 
+                    <b> Staff Information: </b> </br>
+                        Name: {{session["first_name"]}} {{session["last_name"]}} </br>
+                    Company: {{session["airline_name"]}} </br>
+                </div>
+        </br>
+            <a href = "/staffHome" class = "option"> Home </a>  
+            <a href = "/flightManage" class = "option"> Flights Management </a> 
+            <a href = "/airSystemManage/airplane" class = "option"> Airplanes Management</a>   
+            <a href = "/airSystemManage/airport" class = "option"> Airports Management</a> 
+            <a href = "/flightManage" class = "option"> View Ratings</a>
+            <a href = "/report/topAgent" class = "option"> View Top Booking Agents</a>  
+            <a href = "/report/topCustomer" class = "option"> View Top Customers</a> 
+            <a href = "/report/salesReport/default" class = "option"> View Reports </a> 
+            <a href = "/report/revenueCompare" class = "option"> Revenue Comparison </a> 
+            <a href = "/report/topDestination" class = "option"> Top Destination </a> 
+            <a href="/logout" class="option">Log out</a>
+        </div>
+    <!-- sidebar ends -->
+
+    <!-- display content -->
+        <div class="content">
+            <div class="title staff">Flights Operated by {{session["airline_name"]}} </div>
+            <div class = "condition panel">
+                <form action='/flightManage' method="POST">
+                    <h4> View Options </h4>
+                    <div class="inputBlock">
+                        <label for="dept_from">place of departure:</label>
+                        <input type="text" name = "dept_from" required/> </br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="arr_at">destination:</label>
+                        <input type="text" name = "arr_at" required/></br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="start_date">departure start date:</label>
+                        <input type="date" name = "start_date" required/></br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="end_date">departure end date:</label>
+                        <input type="date" name = "end_date" required/></br>
+                    </div>
+                    <input type="submit" value = View> <br>   
+                </form>
+            </div>
+
+            <div class = "flight_info">
+                {% if default%}
+                <h4> {{default}} </h4>
+                {% endif %}
+                {% if flights %}  
+                    {% if msg is string %}
+                    <h4> {{msg}} </h4>
+                    {% else %}
+                    <h4> Departure From: {{msg[0]}}; Arrive at {{msg[1]}}; Start Date {{msg[2]}}; End Date {{msg[3]}} </h4>
+                    {% endif %} 
+                <table>
+                        <th> Airline Name </th>
+                        <th> Flight Number </th>
+                        <th> Departure Time </th>
+                        <th> Arrival Time </th>
+                        <th> Base Price </th>
+                        <th> Flight Status </th>
+                        <th> Departure from </th>
+                        <th> Arrive at </th>
+                        <th> Airplane ID </th>
+                        <th> Actions </th>
+                        <th> Passengers </th>
+                        <th> Ratings </th>
+                    {% for line in flights %}
+                        <tr>
+                            <td>{{line['airline_name']}}</td>
+                            <td>{{line['flight_num']}}</td>
+                            <td>{{line['dept_time']}}</td>
+                            <td>{{line['arr_time']}}</td>
+                            <td>{{line['base_price']}}</td>
+                            <td>{{line['flight_status']}}</td>
+                            <td>{{line['dept_from']}}</td>
+                            <td>{{line['arr_at']}}</td>
+                            <td>{{line['airplane_id']}}</td>
+                            <td>
+                                <a href = "/updateFlight/{{line['flight_num']}}/{{line['dept_time']}}"> Update Flight </a>
+                            </td>
+                            <td>
+                                <a href = "/viewPassengers/{{line['flight_num']}}/{{line['dept_time']}}"> View Passengers </a>
+                            </td>
+                            <td>
+                                <a href = "/report/viewRatings/{{line['flight_num']}}/{{line['dept_time']}}"> View Ratings </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </table>
+
+                {% if error %}
+                <p class="noFound"><strong>Error:</strong> {{error}}</p>
+                <a href='/flightManage'>Go back to Default </a>
+                {% endif %}
+
+                {% if noFound %}
+                <p class="noFound"><strong>Error:</strong> {{noFound}}</p>
+                <a href='/flightManage'>Go back to Default </a>
+                {% endif %}
+            </div>
+            
+            <div class = "add_flight">
+                <h4> Add New Flights </h4>
+                <form action = "/addFlight" method = "POST"> 
+                    <div class="inputBlock">
+                        <label for="flight_num1">flight number:</label>
+                        <input type="text" name = "flight_num1" required/> </br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="dept_time1">departure time:</label>
+                        <input type="datetime-local" step = "1" name = "dept_time1" required/></br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="arr_time1">arrival time:</label>
+                        <input type="datetime-local" step = "1" name = "arr_time1" required/></br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="base_price1">base price:</label>
+                        <input type="text" name = "base_price1" required/> </br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="dept_from1">place of departure:</label>
+                        <input type="text" name = "dept_from1" required/> </br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="arr_at1">destination:</label>
+                        <input type="text" name = "arr_at1" required/></br>
+                    </div>
+                    <div class="inputBlock">
+                        <label for="airplane_id1">airplane id:</label>
+                        <input type="text" name = "airplane_id1" required/></br>
+                    </div>
+                    <input type="submit" value = Add> <br>   
+                </form>
+            </div>
+        </div>
+            <script>
+                {% if session["flight_created"] == True %}
+                alert("Flight Creation Successful!");
+                {% set session = session.update({"flight_created":False}) %}
+                {% endif %}
+
+                {% if session["flight_updated"] == True %}
+                alert("Flight Status Update Successful!");
+                {% set session = session.update({"flight_updated":False}) %}
+                {% endif %}
+            </script>
+    </div>
+
+    <script src="{{ url_for('static',filename='js/script.js')}}"></script>
+{% endblock %}

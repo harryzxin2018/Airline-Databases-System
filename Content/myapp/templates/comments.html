@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+{% block body %} 
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+<div class="container">
+    <div class="sidebar">
+        <a href="/customerHome" class="option">Home</a>
+        <a href="/viewMyFlights" class="option">View My Flights</a>
+        <a href="/searchForFlights" class="option">Search for Flights</a>
+        <a href="/comments" class="option">Give Comments</a>
+        <a href="/trackMySpending" class="option">Track My Spending</a>
+        <a href="/logout" class="option">Log out</a>
+    </div>
+
+    <div class="content">
+        <div class="title">Past Flights</div>
+            <table id="previousFlights">
+                <th> Airline Name </th>
+                <th> Flight Number </th>
+                <th> Departure Time </th>
+                <th> Arrival Time </th>
+                <th> Departure from </th>
+                <th> Departure City </th>
+                <th> Arrive at </th>
+                <th> Arrival City </th>
+                <th> Price </th>
+                {% for line in flights %}
+                <tr>
+                    <td class="past_flight">{{line['airline_name']}}</td>
+                    <td class="past_flight">{{line['flight_num']}}</td>
+                    <td class="past_flight">{{line['dept_time']}}</td>
+                    <td class="past_flight">{{line['arr_time']}}</td>
+                    <td class="past_flight">{{line['dept_from']}}</td>
+                    <td class="past_flight">{{line['city']}}</td>
+                    <td class="past_flight">{{line['arr_at']}}</td>
+                    <td class="past_flight">{{line['B.city']}}</td>
+                    <td class="past_flight">{{line['sold_price']}}</td>
+                    <td class="past_flight"><a href="/giveComments/{{line['ticket_id']}}">Comment</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+    </div>
+
+</div>
+{% endblock %}

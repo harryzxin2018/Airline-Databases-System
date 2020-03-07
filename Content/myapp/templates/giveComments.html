@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+{% block body %} 
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+<div class="container">
+    <div class="sidebar">
+        <a href="/customerHome" class="option">Home</a>
+        <a href="/viewMyFlights" class="option">View My Flights</a>
+        <a href="/searchForFlights" class="option">Search for Flights</a>
+        <a href="/comments" class="option">Give Comments</a>
+        <a href="/trackMySpending" class="option">Track My Spending</a>
+        <a href="/logout" class="option">Log out</a>
+    </div>
+
+    
+    <div class="content">
+        <div class="title">Give Comments</div>
+            <table id="previousFlights">
+                <th> Airline Name </th>
+                <th> Flight Number </th>
+                <th> Departure Time </th>
+                <th> Arrival Time </th>
+                <th> Departure from </th>
+                <th> Departure City </th>
+                <th> Arrive at </th>
+                <th> Arrival City </th>
+                <th> Price </th>
+                <tr>
+                    <td class="past_flight">{{flight['airline_name']}}</td>
+                    <td class="past_flight">{{flight['flight_num']}}</td>
+                    <td class="past_flight">{{flight['dept_time']}}</td>
+                    <td class="past_flight">{{flight['arr_time']}}</td>
+                    <td class="past_flight">{{flight['dept_from']}}</td>
+                    <td class="past_flight">{{flight['city']}}</td>
+                    <td class="past_flight">{{flight['arr_at']}}</td>
+                    <td class="past_flight">{{flight['B.city']}}</td>
+                    <td class="past_flight">{{flight['sold_price']}}</td>
+                </tr>
+            </table>
+            <form class="commentForm" action="/giveComments/{{flight['ticket_id']}}" method="POST">
+                <label for="rate">Rating</label>
+                <input name="rate" type="number" min="1.0" max="5.0" value = "{{rates['rate']}}" required>
+                <label for="comment">Comment</label>
+                <input name="comment" type="text" value = "{{rates['comments']}}" required>
+                <input type="submit" value="Submit">
+                <a href="/comments" class="back special">Back</a>
+            </form>
+    </div>
+
+</div>
+{% endblock %}

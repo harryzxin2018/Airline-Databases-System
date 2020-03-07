@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+{% block body %} 
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+    <div class="title">Flight Status</div>
+    {% if status %}
+        <table>
+            <th> Airline Name </th>
+            <th> Flight Number </th>
+            <th> Departure Time </th>
+            <th> Arrival Time </th>
+            <th> Flight Status </th>
+            <th> Departure from </th>
+            <th> Arrive at </th>
+        {% for line in status %}
+            <tr>
+                <td>{{line['airline_name']}}</td>
+                <td>{{line['flight_num']}}</td>
+                <td>{{line['dept_time']}}</td>
+                <td>{{line['arr_time']}}</td>
+                <td>{{line['flight_status']}}</td>
+                <td>{{line['dept_from']}}</td>
+                <td>{{line['arr_at']}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+    {% endif %}
+    <a href="/" class="back special">Back</a>
+
+{% endblock %}

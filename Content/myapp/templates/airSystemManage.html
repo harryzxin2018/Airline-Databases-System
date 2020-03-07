@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+{% block body %}
+        <div class="topBar">
+            <div class="logo">Airline Ticket System</div>
+        </div>
+    
+        <div class="line"></div>
+        <div class="container">
+            <div class="sidebar">
+                <div class="info"> 
+                        <b> Staff Information: </b> </br>
+                            Name: {{session["first_name"]}} {{session["last_name"]}} </br>
+                        Company: {{session["airline_name"]}} </br>
+                    </div>
+            </br>
+                <a href = "/staffHome" class = "option"> Home </a>  
+                <a href = "/flightManage" class = "option"> Flights Management </a> 
+                <a href = "/airSystemManage/airplane" class = "option"> Airplanes Management</a>   
+                <a href = "/airSystemManage/airport" class = "option"> Airports Management</a> 
+                <a href = "/flightManage" class = "option"> View Ratings</a>
+                <a href = "/report/topAgent" class = "option"> View Top Booking Agents</a>  
+                <a href = "/report/topCustomer" class = "option"> View Top Customers</a> 
+                <a href = "/report/salesReport/default" class = "option"> View Reports </a> 
+                <a href = "/report/revenueCompare" class = "option"> Revenue Comparison </a> 
+                <a href = "/report/topDestination" class = "option"> Top Destination </a> 
+                <a href="/logout" class="option">Log out</a>
+            </div>
+            <div class="content">
+            <!-- airplane management -->
+            {% if state_plane %}
+            {% if airplane %}
+                <div class = "airplane">
+                    <div class="title staff"> Airplanes Operated By {{session["airline_name"]}} </div> 
+                    <table id = "plane_prev">
+                            <th> Airplane ID </th>
+                            <th> Number of Seats </th>
+                        {% for line in airplane %}
+                        <tr>
+                            <td class="plane_prev">{{line["airplane_id"]}}</td> 
+                            <td class="plane_prev">{{line['seats']}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+                <div class = "airplane">
+                    <form class="update_plane" action="/airSystemManage/airplane" method="POST">
+                        <label for="airplane_id">Airplane ID</label>
+                        <input name="airplane_id" type="text" required>
+                        <label for="seats">Number of Seats</label>
+                        <input name="seats" type="text" required>
+                        <input type="submit" value="Add">
+                    </form>
+                </div>
+            {% endif %}
+
+            <!-- airport management  -->
+            {% if state_airport %}
+            {% if airport %}
+            <div class = "airport">
+                <div class="title staff"> Airports in the System: </div>
+                <table id = "airport_prev">
+                        <th> Airport Name </th>
+                        <th> City name </th>
+                    {% for line in airport %}
+                    <tr>
+                        <td class="airport_prev">{{line['name']}}</td> 
+                        <td class="airport_prev">{{line['city']}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+            <div class = "airport">
+                <form class="update_airport" action="/airSystemManage/airport" method="POST">
+                    <label for="name">Airport Name</label>
+                    <input name="name" type="text" required>
+                    <label for="city">City Name</label>
+                    <input name="city" type="text" required>
+                    <input type="submit" value="Add">
+                </form>
+            </div>
+           {% endif %}
+           
+
+            {% if noFound %}
+            <p class="noFound"> {{noFound}}</p>
+            {% if message == "airplane" %}
+            <a href='/airSystemManage/airplane'>Go back to airplane Management</a>
+            {% else %}
+            <a href='/airSystemManage/airport'>Go back to airport Management</a>
+            {% endif %}
+            {% endif %}
+            </div>
+
+            <script>
+                    {% if session["airplane_updated"] == True %}
+                    alert("Airplane Successfully Added!");
+                    {% set session = session.update({"airplane_updated":False}) %}
+                    {% endif %}
+    
+                    {% if session["airport_updated"] == True %}
+                    alert("Airport Successfully Added!");
+                    {% set session = session.update({"airport_updated":False}) %}
+                    {% endif %}
+                </script>
+        </div>
+    <script src="{{ url_for('static',filename='js/script.js')}}"></script>
+{% endblock %}

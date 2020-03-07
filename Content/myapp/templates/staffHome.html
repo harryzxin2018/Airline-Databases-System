@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+{% block body %}
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+    {% if not error %}
+    <div class="container">
+        <div class="sidebar">
+            <div class="info"> 
+                    <b> Staff Information: </b> </br>
+                        Name: {{session["first_name"]}} {{session["last_name"]}} </br>
+                    Company: {{session["airline_name"]}} </br>
+                </div>
+        </br>
+            <a href = "/staffHome" class = "option"> Home </a>  
+            <a href = "/flightManage" class = "option"> Flights Management </a> 
+            <a href = "/airSystemManage/airplane" class = "option"> Airplanes Management</a>   
+            <a href = "/airSystemManage/airport" class = "option"> Airports Management</a> 
+            <a href = "/flightManage" class = "option"> View Ratings</a>
+            <a href = "/report/topAgent" class = "option"> View Top Booking Agents</a>  
+            <a href = "/report/topCustomer" class = "option"> View Top Customers</a> 
+            <a href = "/report/salesReport/default" class = "option"> View Reports </a> 
+            <a href = "/report/revenueCompare" class = "option"> Revenue Comparison </a> 
+            <a href = "/report/topDestination" class = "option"> Top Destination </a> 
+            <a href="/logout" class="option">Log out</a>
+        </div>
+
+        <div class="content">
+            <div class="title">Welcome, {{username}}.</div>
+
+        </div>
+    </div>
+    {% endif %}
+    {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+        <a href="/login">Go back to Login</a>
+    {% endif %}
+
+    <script src="{{ url_for('static',filename='js/script.js')}}"></script>
+{% endblock %}

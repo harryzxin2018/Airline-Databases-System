@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+{% block body %} 
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+<div class="container">
+        <div class="sidebar">
+            <a href="/agentHome" class="option">Home</a>
+            <a href="/viewMyFlights" class="option">View My Flights</a>
+            <a href="/searchForFlights" class="option">Search for Flights</a>
+            <a href="/commission" class="option">View My Comission</a>
+            <a href="/topCustomers" class="option">Top Customers</a>
+            <a href="/logout" class="option">Log out</a>
+        </div>
+
+    <div class="content">
+        <div class="title">My Commission</div>
+        <form class="spending" action="/commission" method="POST">
+            <div class="inputBlock">
+                <label class="dateLabel" for="from_date">from date: </label>
+                <input type="date" name = "from_date" required/></br>   
+            </div>         
+            <div class="inputBlock">   
+                <label class="dateLabel" for="to_date">to date: </label>
+                <input type="date" name = "to_date" required/></br>
+            </div> 
+            <input type="submit" class="dateSubmit" value="view commission within this range"> <br>
+        </form>
+
+        {% if error %}
+        <div class="spending totalSpending">{{error}}</div>
+        {% else %}
+
+        {% if from_date %}
+        <div class="spending totalSpending">My total commission from {{from_date}} to {{to_date}} is {{total_price}}.</div>
+        <div class="spending totalSpending">My average commission per ticket from {{from_date}} to {{to_date}} is {{average_commission}}.</div>
+        <div class="spending totalSpending">My total sale from {{from_date}} to {{to_date}} is {{ticket_num}}.</div>
+        {% else %}
+        <div class="spending totalSpending">My total commission in last 30 days is {{total_price}}.</div>
+        <div class="spending totalSpending">My average commission per ticket in last 30 days is {{average_commission}}.</div>
+        <div class="spending totalSpending">My total sale in last 30 days is {{ticket_num}}.</div>
+        {% endif %}
+
+        {% endif %}
+
+    
+    </div>
+</div>
+
+{% endblock %}

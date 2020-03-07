@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+{% block body %} 
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+<div class="container">
+        <div class="sidebar">
+            <a href="/agentHome" class="option">Home</a>
+            <a href="/viewMyFlights" class="option">View My Flights</a>
+            <a href="/searchForFlights" class="option">Search for Flights</a>
+            <a href="/commission" class="option">View My Comission</a>
+            <a href="/topCustomers" class="option">Top Customers</a>
+            <a href="/logout" class="option">Log out</a>
+        </div>
+
+    <div class="content">
+        <div class="title">Top Customers</div>
+        <div class="prompt">Top Customers (num of tickets) in last 6 months: </div>
+        <div class="spending canvas">
+                <canvas id="chart" width="600" height="400"></canvas>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+                <script>
+                    // bar chart data
+                    var barData = {
+                    labels : [
+                        {% for item in labels %}
+                        "{{ item }}",
+                        {% endfor %}
+                ],
+                    datasets : [{
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        data : [
+                        {% for item in values %}
+                            "{{ item }}",
+                            {% endfor %}
+                    ]
+                        }
+                    ]
+                    }
+                    // get bar chart canvas
+                    var mychart = document.getElementById("chart").getContext("2d");
+                    max = {{max}};
+                    steps = 2;
+                    // draw bar chart
+                    new Chart(mychart).Bar(barData, {
+                    scaleOverride: true,
+                    scaleSteps: steps,
+                    scaleStepWidth: Math.ceil(max / steps),
+                    scaleStartValue: 0,
+                    scaleShowVerticalLines: true,
+                    scaleShowGridLines : true,
+                    barShowStroke : true,
+                    scaleShowLabels: true
+                    }
+                    );
+                </script>
+        </div>
+
+        <div class="prompt">Top Customers (sum of commission) in the last year: </div>
+        <div class="spending canvas">
+                <canvas id="chart2" width="600" height="400"></canvas>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+                <script>
+                    // bar chart data
+                    var barData = {
+                    labels : [
+                        {% for item in labels2 %}
+                        "{{ item }}",
+                        {% endfor %}
+                ],
+                    datasets : [{
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        data : [
+                        {% for item in values2 %}
+                            "{{ item }}",
+                            {% endfor %}
+                    ]
+                        }
+                    ]
+                    }
+                    // get bar chart canvas
+                    var mychart = document.getElementById("chart2").getContext("2d");
+                    max = {{max2}};
+                    steps = 10;
+                    // draw bar chart
+                    new Chart(mychart).Bar(barData, {
+                    scaleOverride: true,
+                    scaleSteps: steps,
+                    scaleStepWidth: Math.ceil(max / steps),
+                    scaleStartValue: 0,
+                    scaleShowVerticalLines: true,
+                    scaleShowGridLines : true,
+                    barShowStroke : true,
+                    scaleShowLabels: true
+                    }
+                    );
+                </script>
+        </div>
+        
+    
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+
+{% block body %}
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+        <!-- start of the sidebar -->
+        <div class="container">
+            <div class="sidebar">
+                <div class="info"> 
+                        <b> Staff Information: </b> </br>
+                            Name: {{session["first_name"]}} {{session["last_name"]}} </br>
+                        Company: {{session["airline_name"]}} </br>
+                    </div>
+            </br>
+                <a href = "/staffHome" class = "option"> Home </a>  
+                <a href = "/flightManage" class = "option"> Flights Management </a> 
+                <a href = "/airSystemManage/airplane" class = "option"> Airplanes Management</a>   
+                <a href = "/airSystemManage/airport" class = "option"> Airports Management</a> 
+                <a href = "/flightManage" class = "option"> View Ratings</a>
+                <a href = "/report/topAgent" class = "option"> View Top Booking Agents</a>  
+                <a href = "/report/topCustomer" class = "option"> View Top Customers</a> 
+                <a href = "/report/salesReport/default" class = "option"> View Reports </a> 
+                <a href = "/report/revenueCompare" class = "option"> Revenue Comparison </a> 
+                <a href = "/report/topDestination" class = "option"> Top Destination </a> 
+                <a href="/logout" class="option">Log out</a>
+            </div>
+            {% if flight %}
+            <div class="content">
+                <div class="title staff"> Update the Following Flights: </div>
+                <table id = "flight_prev">
+                        <th> Airline Name </th>
+                        <th> Flight Number </th>
+                        <th> Departure Time </th>
+                        <th> Arrival Time </th>
+                        <th> Base Price </th>
+                        <th> Flight Status </th>
+                        <th> Departure from </th>
+                        <th> Arrive at</th>
+                        <th> Airplane id </th>
+                    <tr>
+                        <td class="flight_prev">{{flight["airline_name"]}}</td>
+                        <td class="flight_prev">{{flight['flight_num']}}</td>
+                        <td class="flight_prev">{{flight['dept_time']}}</td>
+                        <td class="flight_prev">{{flight['arr_time']}}</td>
+                        <td class="flight_prev">{{flight['base_price']}}</td>
+                        <td class="flight_prev">{{flight['flight_status']}}</td>
+                        <td class="flight_prev">{{flight['dept_from']}}</td>
+                        <td class="flight_prev">{{flight['arr_at']}}</td>
+                        <td class="flight_prev">{{flight['airplane_id']}}</td>
+                    </tr>
+                </table>
+
+                <form class="update_flight" action="/updateFlight/{{flight['flight_num']}}/{{flight['dept_time']}}" method="POST">
+                    <label for="status">Flight Status</label>
+                     <select name="statusSelect" id = "statusSelect">
+                        <option value="on time" >on time</option>
+                        <option value="delayed">delayed</option>
+                     </select>
+                    <input type="submit" value="Update">
+                    <a href="/flightManage" class="back special">Back</a>
+                </form>
+
+                <script>
+                    {% if flight['flight_status'] == "on time" %}
+                    document.querySelector('#statusSelect').value = 'on time';
+                    {% else %}
+                    document.querySelector('#statusSelect').value = 'delayed';
+                    {% endif %}
+                </script>
+            {% endif %}
+
+            {% if noFound %}
+            <p class="noFound"><strong>Error:</strong> {{noFound}}</p>
+            <a href='/flightManage'>Go back to Flight Management</a>
+            {% endif %}
+            </div>
+        </div>
+
+    <script src="{{ url_for('static',filename='js/script.js')}}"></script>
+{% endblock %}

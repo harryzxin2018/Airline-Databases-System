@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+
+{% endblock %}
+{% block body %} 
+<div class="topBar">
+    <div class="logo">Airline Ticket System</div>
+</div>
+
+<div class="line"></div>
+<div class="container">
+    {%if role == 'agent' %}
+    <div class="sidebar">
+        <a href="/agentHome" class="option">Home</a>
+        <a href="/viewMyFlights" class="option">View My Flights</a>
+        <a href="/searchForFlights" class="option">Search for Flights</a>
+        <a href="/commission" class="option">View My Comission</a>
+        <a href="/topCustomers" class="option">Top Customers</a>
+        <a href="/logout" class="option">Log out</a>
+    </div>
+    {% else %}
+    <div class="sidebar">
+        <a href="/customerHome" class="option">Home</a>
+        <a href="/viewMyFlights" class="option">View My Flights</a>
+        <a href="/searchForFlights" class="option">Search for Flights</a>
+        <a href="/comments" class="option">Give Comments</a>
+        <a href="/trackMySpending" class="option">Track My Spending</a>
+        <a href="/logout" class="option">Log out</a>
+    </div>
+    {% endif %}
+
+    <div class="content">
+        <div class="title">Search for Flights</div>
+        <div id="searchBlock">
+            <div onclick="oneWay()" class="smallButton active" id="oneWayButton">One Way</div>
+            <div onclick="roundTrip()" class="smallButton" id="roundTripButton">Round Trip</div>
+            <form action="/searchFlightsResults" class="searchForm" method="POST" onsubmit="return checkForm();">
+                <div class="inputBlock">
+                    <label for="dept_from">place of departure:</label>
+                    <input type="text" name = "dept_from" placeholder="city/airport" required/> </br>
+                </div>
+                <div class="inputBlock">
+                    <label for="arr_at">destination:</label>
+                    <input type="text" name = "arr_at" placeholder="city/airport" required/></br>
+                </div>
+                <div class="inputBlock">
+                    <label for="dept_date">departure date:</label>
+                    <input type="date" name = "dept_date" required/></br>
+                </div>
+                <div class="inputBlock" id="return_date">
+                    <label for="return_date">return date:</label>
+                    <input type="date" name = "return_date"/></br>
+                </div>
+                <input class='dateSubmit' type="submit" value = "Search"> <br>
+            </form>
+        </div>
+        {% if flights %}
+        {% if returnFlights %}
+            <h2>Departure Flights</h2>
+        {% endif %}
+            <table>
+                <th> Airline Name </th>
+                <th> Flight Number </th>
+                <th> Departure Time </th>
+                <th> Arrival Time </th>
+                <th> Departure from </th>
+                <th> Departure City </th>
+                <th> Arrive at </th>
+                <th> Arrival City </th>
+                <th> Price </th>
+                <th> Purchase </th>
+            {% for line in flights %}
+                <tr>
+                    <td class="dept_flight">{{line['airline_name']}}</td>
+                    <td class="dept_flight">{{line['flight_num']}}</td>
+                    <td class="dept_flight">{{line['dept_time']}}</td>
+                    <td class="dept_flight">{{line['arr_time']}}</td>
+                    <td class="dept_flight">{{line['dept_from']}}</td>
+                    <td class="dept_flight">{{line['city']}}</td>
+                    <td class="dept_flight">{{line['arr_at']}}</td>
+                    <td class="dept_flight">{{line['B.city']}}</td>
+                    <td class="dept_flight">{{line['current_price']}}</td>
+                    {% if line['seatStatus'] == 'normal' %}
+                    <td class="dept_flight"><input type="radio" class="radio" value="{{line['index']}}"/></td>
+                    {% else %}
+                    <td class="dept_flight">Full</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </table>
+
+        {% if returnFlights %}
+            <h2>Return Flights</h2>
+            <table>
+                <th> Airline Name </th>
+                <th> Flight Number </th>
+                <th> Departure Time </th>
+                <th> Arrival Time </th>
+                <th> Departure from </th>
+                <th> Departure City </th>
+                <th> Arrive at </th>
+                <th> Arrival City </th>
+                <th> Price </th>
+                <th> Purchase </th>
+            {% for line in returnFlights %}
+                <tr>
+                    <td class="return_flight">{{line['airline_name']}}</td>
+                    <td class="return_flight">{{line['flight_num']}}</td>
+                    <td class="return_flight">{{line['dept_time']}}</td>
+                    <td class="return_flight">{{line['arr_time']}}</td>
+                    <td class="return_flight">{{line['dept_from']}}</td>
+                    <td class="return_flight">{{line['city']}}</td>
+                    <td class="return_flight">{{line['arr_at']}}</td>
+                    <td class="return_flight">{{line['B.city']}}</td>
+                    <td class="return_flight">{{line['current_price']}}</td>
+                    {% if line['seatStatus'] == 'normal' %}
+                    <td class="dept_flight"><input type="radio" class="radio" value="{{line['index']}}"/></td>
+                    {% else %}
+                    <td class="dept_flight">Full</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+        <div class="totalPrice">
+            <span>Total:</span><span id="total"></span><br>
+        </div>
+        <button id="purchase">Purchase</button>
+        {% endif %}
+        {% if error %}
+            <p class="error"><strong>Error:</strong> {{error}}</p>
+        {% endif %}
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{{ url_for('static',filename='js/script.js')}}"></script>
+<script src="{{ url_for('static',filename='js/purchase.js')}}"></script>
+
+{% endblock %}
